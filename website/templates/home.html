@@ -28,7 +28,7 @@
                 <tbody>
                     {% for record in records %}
                     <tr>
-                        <th scope="row">{{ record.id }}</th>
+                        <th scope="row"><a href="{% url 'record' record.id %}">{{ record.id }}</a></th>
                         <td>{{ record.first_name }}</td>
                         <td>{{ record.last_name }}</td>
                         <td>{{ record.email }}</td>
@@ -47,22 +47,22 @@
         <p class="text-center">No records found.</p>
         {% endif %}
         {% else %}
-
-        <h1 class="text-center">Login</h1>
-        <br />
-        <form method="POST" action="{% url 'home' %}">
-            {% csrf_token %}
-            <div class="mb-3">
-                <input type="text" class="form-control" name="username" placeholder="Username" required />
-            </div>
-            <br>
-            <div class="mb-3">
-                <input type="password" class="form-control" name="password" placeholder="Password" required />
-            </div>
-            <br>
-            <button type="submit" class="btn btn-secondary w-100">Login</button>
-        </form>
-
+        <div class="col-md-6 offset-md-3">
+            <h1>Login</h1>
+            <br />
+            <form method="POST" action="{% url 'home' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <input type="text" class="form-control" name="username" placeholder="Username" required />
+                </div>
+                <br>
+                <div class="mb-3">
+                    <input type="password" class="form-control" name="password" placeholder="Password" required />
+                </div>
+                <br>
+                <button type="submit" class="btn btn-secondary w-100">Login</button>
+            </form>
+        </div>
         {% endif %}
     </div>
 </div>
