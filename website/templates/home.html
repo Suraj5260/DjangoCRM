@@ -5,10 +5,9 @@
 <div class="d-flex justify-content-center ">
     <div class="col-md-10">
         {% if user.is_authenticated %}
-        <h1 class="text-center">Records</h1>
+        <h1 class="text-center">Active Records</h1>
         <br>
-
-        {% if records %}
+        {% if active_records %}
         <div class="table-responsive">
             <table class="table table-bordered table-hover table-striped table-bordered ">
                 <thead class="table-dark">
@@ -26,7 +25,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for record in records %}
+                    {% for record in active_records %}
                     <tr>
                         <td>{{ record.first_name }}</td>
                         <td>{{ record.last_name }}</td>
@@ -45,6 +44,49 @@
         </div>
         {% else %}
         <p class="text-center">No records found.</p>
+        {% endif %}
+        {% if request.user.is_superuser%}
+        <br>
+        <h1 class="text-center">Inactive Records</h1>
+        <br>
+        {% if inactive_records and request.user.is_superuser %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped table-bordered ">
+                <thead class="table-dark">
+                    <tr>                        
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Phone No.</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">City</th>
+                        <th scope="col">State</th>
+                        <th scope="col">Zipcode</th>
+                        <th scope="col">Created On</th>
+                        <th scope="col">ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in inactive_records %}
+                    <tr>                        
+                        <td>{{ record.first_name }}</td>
+                        <td>{{ record.last_name }}</td>
+                        <td>{{ record.email }}</td>
+                        <td>{{ record.phone }}</td>
+                        <td>{{ record.address }}</td>
+                        <td>{{ record.city }}</td>
+                        <td>{{ record.state }}</td>
+                        <td>{{ record.zipcode }}</td>
+                        <td>{{ record.created_at }}</td>
+                        <th scope="row"><a href="{% url 'record' record.id %}">{{ record.id }}</a></th>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-center">No Inactive records found.</p>
+        {% endif %}
         {% endif %}
         {% else %}
         <div class="col-md-6 offset-md-3">

@@ -6,7 +6,8 @@ from .models import Record
 
 
 def home(request):
-    records = Record.objects.all()
+    active_records = Record.objects.filter(status = True).all()
+    inactive_records = Record.objects.filter(status = False).all()
     # check to see if logging in
     if request.method == 'POST':
         username = request.POST['username']
@@ -24,8 +25,7 @@ def home(request):
             return redirect('home')
 
     else:
-        return render(request, 'home.html', {'records': records})
-
+        return render(request, 'home.html', {'active_records': active_records, 'inactive_records':inactive_records})
 
 def logout_user(request):
     logout(request)
@@ -106,3 +106,17 @@ def update_record(request, pk):
         messages.success(
                 request, "U must be loggied in...")
         return redirect('home')
+
+
+def update_record(request, pk):
+    if request.user.is_authenticated and request.user.is_superuser:
+        current_record = Record.objects.get(id = pk)
+        current_record.status = not current_record.status
+        current_record.save()
+        messages.success(request, "status has been updated!")
+        return redirect('home')
+    else:
+        messages.success(
+                request, "U must be loggied in...")
+        return redirect('home')
+    
